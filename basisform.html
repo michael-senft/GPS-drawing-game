@@ -29,7 +29,7 @@
         function initialize() {
             var mapOptions = {
                 center: new google.maps.LatLng(51.22474963, 4.41347301),
-                zoom: 16
+                zoom: 12
             };
 
             var map = new google.maps.Map(document.getElementById('map-canvas'),
@@ -66,6 +66,11 @@
         google.maps.event.addDomListener(window, 'load', initialize);
 
     </script>
+    <script>
+	$(document).on("swiperight", function(events, ui) {
+		$("#myPanel").panel("open", {display: 'overlay', position: 'left'} );
+	});
+	</script>
 <body>
 			<!-- Start of first page I -->
 		<div data-role="page" id="page1">
@@ -90,7 +95,7 @@
 			<!-- /content -->
 			
 			<!-- footer -->
-			<!--div data-role="footer" data-position="fixed">
+			<!--div data-role="footer">
 				<h4>2014 michael Senft</h4>
 			</div-->
 			<!-- /footer -->
@@ -98,22 +103,26 @@
 		<!-- /page -->
         
         <div data-role="page" id="page2">
+        	<div data-role="panel" id="myPanel" class="ui-response" data-content-theme="b">
+            <p>hier kan vanalles van menu in komen, opties? </p> 
+            </div>
 			<!-- Header -->
 			<div data-role="header" data-position="fixed">
+            	<a href="#page1" data-role="button" data-transition="pop">Back</a>
 				<h1>map</h1>
 
 			</div>
 			<!-- /header -->
 			<!-- Content    -->
 			<div data-role="content" id="content">
-            
+            	<a href="#myPanel" data-role="button" data-display="overlay" data-position="left" data-dismissible="true">Menu</a>
 				<div id="map-canvas" style="height:100%"></div>
 				
 			</div>
 			<!-- /content -->
 			
 			<!-- footer -->
-			<!--div data-role="footer" data-position="fixed">
+			<!--div data-role="footer">
 				<h4>2014 michael Senft</h4>
 			</div-->
 			<!-- /footer -->
