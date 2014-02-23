@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>login</title>
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.1/jquery.mobile-1.4.1.min.css" />
+	<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+	<script src="http://code.jquery.com/mobile/1.4.1/jquery.mobile-1.4.1.min.js"></script>
+    
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <style>
+		#content {
+                padding: 0;
+                position : absolute; 
+                top : 40px;  
+                right : 0; 
+                bottom : 40px;  
+                left : 0;     
+       			   }
+        
+		
+    </style>
+	
+    
+</head>
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=drawing"></script>
+    <script>
+        function initialize() {
+            var mapOptions = {
+                center: new google.maps.LatLng(51.22474963, 4.41347301),
+                zoom: 12
+            };
+
+            var map = new google.maps.Map(document.getElementById('map-canvas'),
+              mapOptions);
+
+            var drawingManager = new google.maps.drawing.DrawingManager({
+                drawingMode: google.maps.drawing.OverlayType.MARKER,
+                drawingControl: true,
+                drawingControlOptions: {
+                    position: google.maps.ControlPosition.TOP_CENTER,
+                    drawingModes: [
+                      google.maps.drawing.OverlayType.MARKER,
+                      google.maps.drawing.OverlayType.CIRCLE,
+                      google.maps.drawing.OverlayType.POLYGON,
+                      google.maps.drawing.OverlayType.POLYLINE,
+                      google.maps.drawing.OverlayType.RECTANGLE
+                    ]
+                },
+                markerOptions: {
+                    icon: 'images/beachflag.png'
+                },
+                circleOptions: {
+                    fillColor: '#ffff00',
+                    fillOpacity: 1,
+                    strokeWeight: 5,
+                    clickable: false,
+                    editable: true,
+                    zIndex: 1
+                }
+            });
+						//map.setCenter(myCenter);
+            //drawingManager.setMap(map);
+        }
+
+        google.maps.event.addDomListener(window, 'load', initialize);*/
+		
+		$(document).on('pageshow', '#page3',function(e,data){    
+           var minZoomLevel = 12;
+ 
+           var map = new google.maps.Map(document.getElementById('map-canvas'), {
+              zoom: minZoomLevel,
+              center: new google.maps.LatLng(51.22474963, 4.41347301),
+              mapTypeId: google.maps.MapTypeId.ROADMAP
+			  
+			  
+           });
+		   google.maps.event.trigger(map, 'resize');
+                });
+				
+
+   </script>
+    <script>
+	$(document).on("swiperight", function(events, ui) {
+		$("#myPanel").panel("open", {display: 'overlay', position: 'left'} );
+	});
+	</script>
+<body>
+
+		    <!-- Start of first page I -->
+		    <div data-role="page" id="page1">
+			<!-- Header -->
+			<div data-role="header" data-position="fixed">
+				<h1>GPS DRAWING GAME</h1>
+
+			</div>
+			<!-- /header -->
+			<!-- Content    -->
+			<div data-role="content" id="logincontent">
+            
+				<div id="logindiv" style="height:100%">
+                <label for="basic">Username:</label>
+				<input type="text" name="username" id="username" data-mini="true" />
+                <label for="basic">Password:</label>
+				<input type="text" name="password" id="password" data-mini="true" />
+                <a href="#page2" data-role="button" data-transition="flip" id="logbtn">Log in</a>
+                <a href="#page4" data-role="button" data-transition="flip" id "RegisterButton">Register</a>
+                </div>
+                
+		  <!-- start of second page -->
+          <div data-role="page" id="page2">	
+          <!-- header of second page -->	
+          <div date-role="header" data-position="fixed">
+          <h1> Mode Selection</h1>
+          
+			</div>
+            <!-- /header -->
+			<!-- Content    -->
+            <div data-role="content" id="ModeSelection">
+            
+            <div id="Modediv" style="height:100%">
+         <a href="#page3" data-role="button" data-transition="flip" id="KidsButton">Kids Mode</a>
+         <a href="#page3" data-role="button" data-transition="flip" id="ChalButton">Challenger Mode</a>
+         <a href="#page3" data-role="button" data-transition="flip" id="FreeButton">Free Mode</a>
+         </div>
+             
+            
+             </div>
+			<!-- /content -->
+			
+			<!-- footer -->
+			<!--div data-role="footer">
+				<h4>2014 michael Senft</h4>
+			</div-->
+			<!-- /footer -->
+		</div>
+		<!-- /page -->
+        
+        <div data-role="page" id="page3">
+        	<div data-role="panel" id="myPanel" class="ui-response" data-content-theme="b">
+            <p>hier kan vanalles van menu in komen, opties? </p> 
+            </div>
+			<!-- Header -->
+			<div data-role="header" data-position="fixed">
+            	<a href="#page1" data-role="button" data-transition="pop">Back</a>
+				<h1>map</h1>
+
+			</div>
+			<!-- /header -->
+			<!-- Content    -->
+			<div data-role="content" id="content">
+            	<a href="#myPanel" data-role="button" data-display="overlay" data-position="left" data-dismissible="true">Menu</a>
+				<div id="map-canvas" style="height:100%"></div>
+				
+			</div>
+			<!-- /content -->
+			
+			<!-- footer -->
+			<!--div data-role="footer">
+				<h4>2014 michael Senft</h4>
+			</div-->
+			<!-- /footer -->
+		</div>
+        		    <!-- Start of first page I -->
+		    <div data-role="page" id="page4">
+			<!-- Header -->
+			<div data-role="header" data-position="fixed">
+				<h1>REGISTER PAGE	</h1>
+                <label for="basic">Username:</label>
+				<input type="text" name="username" id="username" data-mini="true" />
+                <label for="basic">Password:</label>
+				<input type="text" name="password" id="password" data-mini="true" />
+                <label for="basic"> Repeat Password:</label>
+				<input type="text" name="password" id="password" data-mini="true" />
+                <label for="basic"> Email adress:</label>
+				<input type="text" name="password" id="password" data-mini="true" />
+                <div class="ui-body ui-body-b">
+		<fieldset class="ui-grid-a">
+				<div class="ui-block-a"><div data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-icon="null" data-iconpos="null" data-theme="d" class="ui-btn ui-shadow ui-btn-corner-all ui-submit ui-btn-up-d" aria-disabled="false"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">Cancel</span></span><button type="submit" data-theme="d" class="ui-btn-hidden" aria-disabled="false">Cancel</button></div></div>
+				<div class="ui-block-b"><div data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-icon="null" data-iconpos="null" data-theme="a" class="ui-btn ui-shadow ui-btn-corner-all ui-submit ui-btn-up-a" aria-disabled="false"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">Submit</span></span><button type="submit" data-theme="a" class="ui-btn-hidden" aria-disabled="false">Submit</button></div></div>
+	    </fieldset>
+		</div>
+
+			</div>
+			<!-- /header -->
+			<!-- Content    -->
+			<div data-role="content" id="">
+            
+				<div id="logindiv" style="height:100%">
+                
+                
+                </div>
+            
+    
+</body>
+</html>
