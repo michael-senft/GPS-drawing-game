@@ -27,8 +27,11 @@
 <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=drawing"></script>
     <script>
        	
-		//$(document).on('pageshow', '#page2',function(e,data){  
-		
+		$(document).on('pageshow', '#page2',function(e,data){ 
+		 var element = document.getElementById('map-canvas');
+		 element.innerHTML = "Loading Map please wait...";
+		 
+		});
 		document.addEventListener("deviceready", onDeviceReady, false);
 			
     		var watchID = null;
@@ -38,7 +41,7 @@
 			function onDeviceReady() {
 				//alert()
 				// Update every 3 seconds
-				var options = { frequency: 1000 };
+				var options = { frequency: 1 };
 				watchID = navigator.geolocation.watchPosition(onSuccess, onError, options);
 			}
 
@@ -46,16 +49,22 @@
     //
 			function onSuccess(position) {
 				
-				var minZoomLevel = 10;
-		 
+				   var minZoomLevel = 10;
 				   var map = new google.maps.Map(document.getElementById('map-canvas'), {
 					  zoom: minZoomLevel,
 					  center: new google.maps.LatLng(position.coords.latitude,position.coords.longitude),
-					  mapTypeId: google.maps.MapTypeId.ROADMAP
-					  
-					  
+					  mapTypeId: google.maps.MapTypeId.ROADMAP,
+					  draggable : false
+					  });
+					  var myLatlng = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+					  var marker = new google.maps.Marker({
+      				  position: myLatlng,
+      				  map: map
+					   
 				   });
+				  
 				   google.maps.event.trigger(map, 'resize');
+				   
 			}
 
     // onError Callback receives a PositionError object
@@ -66,7 +75,7 @@
 			}  
 				  
 						
-				//});
+				
 				
 
    </script>
@@ -142,7 +151,6 @@
 			<!-- /header -->
 			<!-- Content    -->
 			<div data-role="content" id="content">
-            	<a href="#myPanel" data-role="button" data-display="overlay" data-position="left" data-dismissible="true">Menu</a>
 				<div id="map-canvas" style="height:100%"></div>
 				
 			</div>
