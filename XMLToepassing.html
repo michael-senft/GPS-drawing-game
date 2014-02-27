@@ -54,6 +54,14 @@
     //
 			function onSuccess(position) {
 				
+				$.ajax(
+	 			{
+	 			type:"GET",
+	 			url:"getpoints.php",
+	 			success:callback
+	 			}
+	 				  )
+				
 				   var minZoomLevel = 10;
 				   var lat = position.coords.latitude;
 				   var long = position.coords.longitude;
@@ -68,8 +76,8 @@
       				  position: myLatlng,
       				  map: map   
 				   });
-				   Addcord(lat,long,map);
-				   DrawPoly()
+				   Addcord(lat,long);
+				   
 				  google.maps.event.trigger(map, 'resize');
 				   
 			}
@@ -86,8 +94,28 @@
 				});
 					
 			}
-			function DrawPoly()
+			
+			$(document).ready(function()
+	 		{
+	 	
+	 			
+	 			});
+	 			
+	 
+	 		function callback(data,status)
+	 		{
+	 	
+	 			var jsArr = JSON.parse(data);
+	 			var path = new Array();
+	 			
+	 			
+				DrawPoly(path);
+	 		}
+			
+			
+			function DrawPoly(path)
 			{
+				alert();
 				
 				/*
 					  var flightPath = new google.maps.Polyline({
@@ -100,27 +128,26 @@
 				
 				  flightPath.setMap(map);
 				  */
-				downloadUrl("XMLMarkers.xml", function(data) {
-    var xml = xmlParse(data);
-    var markers = xml.documentElement.getElementsByTagName("marker");
-    var path = [];
-    for (var i = 0; i < markers.length; i++) {
-      var lat = parseFloat(markers[i].getAttribute("lat"));
-      var lng = parseFloat(markers[i].getAttribute("long"));
-      var point = new google.maps.LatLng(lat,lng);
-      path.push(point);
+				for(var i=0;i<jsArr.length;i++)
+	 			{
+	 				path[i] = new google.maps.LatLng(jsArr[i].lengte, jsArr[i].breedte);
+					var lijnen = [path[i]];
 	  
-    }//finish loop
+    //finish loop
 
-    var polyline = new google.maps.Polyline({
-      path: path,
-      strokeColor: "#FF0000",
-      strokeOpacity: 1.0,
-      strokeWeight: 2
-    });
-    polyline.setMap(map);
+    				var polyline = new google.maps.Polyline({
+      									path: lijnen,
+										geodesic: true,
+      									strokeColor: "#FF0000",
+      									strokeOpacity: 1.0,
+      									strokeWeight: 2
+    									});
+	 				polyline.setMap(map);
+	 			}
+				
+    
 
-});
+
 		
    
 			}
@@ -145,7 +172,7 @@
 <body>
 
 		    <!-- Start of first page I -->
-		    <div data-role="page" id="page1">
+		  <div data-role="page" id="page1">
 			<!-- Header -->
 			<div data-role="header" data-position="fixed">
 				<h1>GPS DRAWING GAME</h1>
@@ -164,28 +191,24 @@
                 <a href="#page4" data-role="button" data-transition="flip" id "RegisterButton">Register</a>
                 </div>
             </div>
-          </div>
+         </div>
                 
 		  <!-- start of second page -->
-          <div data-role="page" id="page2">	
+         <div data-role="page" id="page2">	
           <!-- header of second page -->	
-          <div date-role="header" data-position="fixed">
-          <h1> Mode Selection</h1>
-          
+          	<div date-role="header" data-position="fixed">
+          		<h1>Mode Selection</h1>
 			</div>
           
             <!-- /header -->
 			<!-- Content    -->
             <div data-role="content" id="ModeSelection">
-            
-            <div id="Modediv" style="height:100%">
-         <a href="#page3" data-role="button" data-transition="flip" id="KidsButton">Kids Mode</a>
-         <a href="#page3" data-role="button" data-transition="flip" id="ChalButton">Challenger Mode</a>
-         <a href="#page3" data-role="button" data-transition="flip" id="FreeButton">Free Mode</a>
+            	<div id="Modediv" style="height:100%">
+         			<a href="#page3" data-role="button" data-transition="flip" id="KidsButton">Kids Mode</a>
+         			<a href="#page3" data-role="button" data-transition="flip" id="ChalButton">Challenger Mode</a>
+         			<a href="#page3" data-role="button" data-transition="flip" id="FreeButton">Free Mode</a>
+           		</div>
             </div>
-             
-            
-             </div>
 			<!-- /content -->
 			
 			<!-- footer -->
@@ -210,7 +233,6 @@
 			<!-- Content    -->
 			<div data-role="content" id="content">
 				<div id="map-canvas" style="height:100%"></div>
-				
 			</div>
 			<!-- /content -->
 			
@@ -225,6 +247,8 @@
 			<!-- Header -->
 			<div data-role="header" data-position="fixed">
 				<h1>REGISTER PAGE</h1>
+            </div>
+            <div data-role="content" id="">
                 <label for="basic">Username:</label>
 				<input type="text" name="username" id="username" data-mini="true" />
                 <label for="basic">Password:</label>
@@ -233,22 +257,23 @@
 				<input type="text" name="password" id="password" data-mini="true" />
                 <label for="basic">Email adress:</label>
 				<input type="text" name="password" id="password" data-mini="true" />
-                <div class="ui-body ui-body-b">
-		<fieldset class="ui-grid-a">
-				<div class="ui-block-a"><div data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-icon="null" data-iconpos="null" data-theme="d" class="ui-btn ui-shadow ui-btn-corner-all ui-submit ui-btn-up-d" aria-disabled="false"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">Cancel</span></span><button type="submit" data-theme="d" class="ui-btn-hidden" aria-disabled="false">Cancel</button></div></div>
-				<div class="ui-block-b"><div data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-icon="null" data-iconpos="null" data-theme="a" class="ui-btn ui-shadow ui-btn-corner-all ui-submit ui-btn-up-a" aria-disabled="false"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">Submit</span></span><button type="submit" data-theme="a" class="ui-btn-hidden" aria-disabled="false">Submit</button></div></div>
-	    </fieldset>
+            </div>
+            <div class="ui-body ui-body-b">
+				<fieldset class="ui-grid-a">
+			<div class="ui-block-a"><div data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-icon="null" data-iconpos="null" data-theme="d" class="ui-btn ui-shadow ui-btn-corner-all ui-submit ui-btn-up-d" aria-disabled="false"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text"><a href="#page1" data-role="button" data-transition="pop" data-mini="true">Cancel</a></span></span></div></div>
+				<div class="ui-block-b"><div data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-icon="null" data-iconpos="null" data-theme="a" class="ui-btn ui-shadow ui-btn-corner-all ui-submit ui-btn-up-a" aria-disabled="false"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text"><a href="#page1" data-role="button" data-transition="pop" data-mini="true">Submit</a></span></span></div></div>
+	    		</fieldset>
 		</div>
 
-			</div>
+			
 			<!-- /header -->
 			<!-- Content    -->
-			<div data-role="content" id="">
+			
             
 				<div id="logindiv" style="height:100%">
                 
                 
-                </div>
+               
                 </div>
                 </div>
             
