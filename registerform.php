@@ -17,8 +17,8 @@ Last name: <input type="text" name="Lastname" /><br />
 Username: <input type="text" name="Username"   /><br />
 Password: <input type="password" name="Pwd"  /><br />
 Veriefy Password: <input type="password" name="Verpwd"  /><br />
-email addres: <input type="password" name="Mail"  /><br />
-Veriefy email address: <input type="password" name="Veremail"  /><br />
+email addres: <input type="text" name="Mail"  /><br />
+Veriefy email address: <input type="text" name="Veremail"  /><br />
 
 <input type="submit"/> <a href="#page4" data-role="button" data-transition="flip" id "RegisterButton">cancel</a>
 </form>

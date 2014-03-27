@@ -1,30 +1,48 @@
 ﻿<?php
 $file = simplexml_load_file('Registratieform.xml');
 
-	if (isset($_POST["Firstname"]) && ($_POST["Lastname"]) && (isset($_POST["Username"]) && (isset($_POST["Pwd"]) && (isset($_POST["Mail"])))
-	{
+	if (isset($_POST["Firstname"]) && ($_POST["Lastname"]) && (isset($_POST["Username"]) && (isset($_POST["Pwd"]) && (isset($_POST[   
+	"Verpwd"])) && (isset($_POST["Mail"])) && (isset($_POST["Veremail"])))
+	
+	        {
 			$Name = $_POST["Firstname"];
 			$Lname = $_POST["Lastname"];
 			$User = $_POST["Username"];
-			$User = $_POST["Username"];
 			$Pwd = $_POST["Pwd"];
+			$Pwd = $_POST["Verpwd"];
 			$Mail = $_POST["Mail"];
-			$Mail = $_POST["Mail"];
+			$Veremail = $_POST["VereMail"];
+			
 			foreach($file->User as $item)
 			{
-				if($user == $item->  && $pwd == $item->password)
+				if($User == $item->User  && $pwd == $item->Password)
 				{
-				    if ($user == $item->User  && $pwd == $item->password)
+				    if ($user == $item->User  && $Verpwd == $item->Password)
 				    {
-					session_start();
-					$_SESSION["inlog"] = $User;
-
-				     }
-				      else
-				     {
-					  print "failed to login";
-				     }
+					//session_start();
+					//$_SESSION["inlog"] = $User;
+					print "password did match!";
+				    }				     
 				}
+				 else
+				     {
+					  print "Password did not match!";
+				     }
+					 
+			 if($User == $item->User  && $Mail == $item->Mail)
+				{
+           		    if ($user == $item->User  && $Veremail == $item->Mail)
+				    {
+					//session_start();
+					//$_SESSION["inlog"] = $User;
+					print "E-mail address did match!";
+				    }				     
+				}
+				 else
+				     {
+					  print "E-mail address did not match!";
+				     }
+
 			}
 		}
 ?>
