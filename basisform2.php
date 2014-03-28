@@ -1,10 +1,9 @@
 ﻿<?php
 $file = simplexml_load_file('Registratieform.xml');
 
-	if (isset($_POST["Firstname"]) && ($_POST["Lastname"]) && (isset($_POST["Username"]) && (isset($_POST["Pwd"]) && (isset($_POST[   
+	if ((isset($_POST["Firstname"])) && (isset($_POST["Lastname"])) && (isset($_POST["Username"])) && (isset($_POST["Pwd"])) && (isset($_POST[   
 	"Verpwd"])) && (isset($_POST["Mail"])) && (isset($_POST["Veremail"])))
-	
-	        {
+	{
 			$Name = $_POST["Firstname"];
 			$Lname = $_POST["Lastname"];
 			$User = $_POST["Username"];
@@ -45,6 +44,7 @@ $file = simplexml_load_file('Registratieform.xml');
 
 			}
 		}
+		
 ?>
 <!DOCTYPE html>
 <html>
