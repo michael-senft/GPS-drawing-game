@@ -30,7 +30,9 @@ session_start();
 <!--<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=drawing"></script>-->
     <script>
 		
-		$(document).on('pageshow', '#pageMap',function(e,data){    
+		$(document).ready(function(e) 
+            
+        {    
            var minZoomLevel = 12;
  
            var map = new google.maps.Map(document.getElementById('map-canvas'), {
@@ -39,7 +41,7 @@ session_start();
               mapTypeId: google.maps.MapTypeId.ROADMAP
            });
 		   google.maps.event.trigger(map, 'resize');
-                });
+         });
 				
     </script>
     <script>
@@ -54,7 +56,7 @@ session_start();
         
         <div data-role="page" id="pageMap">
         	<div data-role="panel" id="myPanel" class="ui-response" data-content-theme="b">
-            <p>hier kan vanalles van menu in komen, opties? </p> 
+            <a href="loguit.php">Log uit</a> 
             </div>
 			<!-- Header -->
 			<div data-role="header" data-position="fixed">
