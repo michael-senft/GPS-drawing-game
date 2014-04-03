@@ -30,9 +30,9 @@ session_start();
 <!--<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=drawing"></script>-->
     <script>
 		
-		$(document).ready(function(e) 
+		 
             
-        {    
+           
            var minZoomLevel = 12;
  
            var map = new google.maps.Map(document.getElementById('map-canvas'), {
@@ -41,7 +41,7 @@ session_start();
               mapTypeId: google.maps.MapTypeId.ROADMAP
            });
 		   google.maps.event.trigger(map, 'resize');
-         });
+         
 				
     </script>
     <script>
