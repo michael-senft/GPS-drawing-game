@@ -1,4 +1,6 @@
 <?php
+session_start();
+session_destroy();
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -32,14 +34,14 @@
 			<div data-role="content" id="logincontent">
             
 				<div id="logindiv" style="height:100%">
-                <form method="post" action="finished.php">
+                <form method="post" action="log.php">
                 <label for="basic">Username:</label>
-				<input type="text" name="usrnme" id="username" data-mini="true" />
+				<input type="text" name="usrname" id="username" data-mini="true" />
                 <label for="basic">Password:</label>
 				<input type="password" name="pwd" id="password" data-mini="true" />
                 <input type='hidden' name='registerform' value='0'>
                 <!--<a href="modeSelect.php" data-role="button" data-transition="flip" id="logbtn">Log in</a> -->
-                <input type='submit' value='submit'>            
+                <input type='submit' value='login'>            
                 </form>
                 <a href="rigister.php" data-role="button" data-transition="flip" id "RegisterButton">Register</a>
                 </div>

@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -24,7 +27,7 @@
 </head>
 <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=drawing"></script>
     <script>
-       	
+       
 	$(document).ready(function()
 	{
 	
@@ -123,7 +126,7 @@
 				  });
 				
 				  flightPath.setMap(map);
-				  */
+				 */
 				for(var i=0;i<jsArr.length;i++)
 	 			{
 	 				path[i] = new google.maps.LatLng(jsArr[i].lengte, jsArr[i].breedte);
