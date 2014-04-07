@@ -11,12 +11,24 @@ if(isset( $_POST["usrname"] ) )
 		$_SESSION['user']=$username;
 
 		header("Location:modeSelect.php");
+		exit();
 	}
 	else
 	{
 		header("login.php");
+		exit();
 	}
 
+}
+if(isset($_POST["kid"]))
+{
+	header("Location:map.php");
+	exit();
+}
+else
+{
+	header("Location:modeSelect.php");
+	exit();
 }
 ?>
 
@@ -24,9 +36,14 @@ if(isset( $_POST["usrname"] ) )
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="jquery-1.4.4.min.js"></script>  
+<script src="http://maps.googleapis.com/maps/api/js?sensor=false" type="text/javascript"></script>
+<script type="text/javascript" src="gmap3.js"></script>
 <title>LogOn</title>
 </head>
 <body>
+<div id="test1" class="gmap3">
 
+</div>
 </body>
 </html>

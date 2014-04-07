@@ -11,6 +11,9 @@ session_destroy();
 <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.1/jquery.mobile-1.4.1.min.css" />
 	<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
 	<script src="http://code.jquery.com/mobile/1.4.1/jquery.mobile-1.4.1.min.js"></script>
+    <script type="text/javascript" src="jquery-1.4.4.min.js"></script>  
+	<script src="http://maps.googleapis.com/maps/api/js?sensor=false" type="text/javascript"></script>
+	<script type="text/javascript" src="gmap3.js"></script>
     <style>
 		#content {
                 padding: 0;
@@ -20,6 +23,12 @@ session_destroy();
                 bottom : 40px;  
                 left : 0;     
        			   }
+				   .gmap3{
+        margin: 20px auto;
+        border: 1px dashed #C0C0C0;
+        width: 1000px;
+        height: 1000px;
+      }
         
 		
     </style>
@@ -34,7 +43,7 @@ session_destroy();
 			<div data-role="content" id="logincontent">
             
 				<div id="logindiv" style="height:100%">
-                <form method="post" action="log.php">
+                <form method="post" action="http://valanmax.be/DrawingGame/log.php">
                 <label for="basic">Username:</label>
 				<input type="text" name="usrname" id="username" data-mini="true" />
                 <label for="basic">Password:</label>
