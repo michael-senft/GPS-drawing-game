@@ -1,0 +1,39 @@
+function GoogleMap(){
+ 
+					//var hoogte = $(document).height();
+					//var breedte = $(document).width();
+					//setTimeout(function(){
+					var latlng = new google.maps.LatLng(51.225067, 4.408544);
+					$("#map_canvas").width("350px").height("600px").gmap3({
+    				map:{
+      						options:{
+       						zoom:12,
+							center:latlng,
+        					navigationControl: true,
+        					scrollwheel: true,
+        					streetViewControl: true
+      						}
+    					},
+						polyline:{
+    								options:{
+      											strokeColor: "#FF0000",
+      											strokeOpacity: 1.0,
+      											strokeWeight: 2,
+     											path:[
+        										[51.253326, 4.278819],
+												[51.185159, 4.254443],
+												[51.183868, 4.322078],
+												[51.235273, 4.372203],
+												[51.252897, 4.336154],
+												[51.253326, 4.278819]
+      											]
+    										}
+						}
+  					});
+  					//$('#map_canvas')
+    				//.width(hoogte)
+    				//.height(breedte) 
+    				//.gmap3({trigger:"resize"});
+					//autofit:{};	
+					//}, 2000);
+}

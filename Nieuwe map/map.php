@@ -9,6 +9,7 @@
 <script type="text/javascript" src="jquery-1.4.4.min.js"></script>  
 <script src="http://maps.googleapis.com/maps/api/js?sensor=false" type="text/javascript"></script>
 <script type="text/javascript" src="gmap3.js"></script>
+<script type="text/javascript" charset="utf-8" src="phonegap-1.2.0.js"></script>
 
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
@@ -26,7 +27,6 @@
             
   
 </head>
-
 <body>
 
 <div id="java">
@@ -49,11 +49,10 @@
 			<div data-role="content" id="content">
             	<a href="#myPanel" data-role="button" data-display="overlay" data-dismissible="true">Menu</a>
 				   <div id="map_canvas">
-					<script type="text/javascript">
-    				//$("#map_canvas").width("350px").height("600px").gmap3();
-					
-					
-					var hoogte = $(document).height();
+                   
+                   <script type="text/javascript">
+
+				var hoogte = $(document).height();
 					var breedte = $(document).width();
 					setTimeout(function(){
 					var latlng = new google.maps.LatLng(51.225067, 4.408544);
@@ -89,9 +88,15 @@
     				.gmap3({trigger:"resize"});
 					autofit:{};	
 					}, 2000);
+				
+					  
+					  
+				   
+		
+				   
 					
-				 
-                    </script></div>				
+                   </script>
+					</div>				
 			</div>
             </div>
                      
