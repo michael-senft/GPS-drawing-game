@@ -1,4 +1,7 @@
-<?php session_start();
+<?php 
+session_start();
+header("Access-Control-Allow-Origin: *");
+
 if(isset( $_POST["usrname"] ) )
 {
 	$username = $_POST["usrname"] ;
@@ -7,10 +10,12 @@ if(isset( $_POST["usrname"] ) )
 	$u = new Users();
 	if( $u->Authorize($username,$password) == 1)
 	{
-
+		//$_SESSION['LOGIN_STATUS']=true;
 		$_SESSION['user']=$username;
-
-		header("Location:modeSelect.php");
+		$naam = $u->getUser($username,$password); 
+		$data = array('success'=> true,'message'=>'Success message: hooray!','naam'=>$naam);
+		echo json_encode($data);
+		//header("Location:modeSelect.php");
 		exit();
 	}
 	else

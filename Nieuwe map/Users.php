@@ -1,5 +1,5 @@
 <?php
-
+header("Access-Control-Allow-Origin: *");
 require "Database.php";
 
 class Users
@@ -30,11 +30,11 @@ class Users
 	
 	function getUser($user,$pwd)
 	{
-		$sql = "SELECT Name FROM Account WHERE Name = '$user' AND Password = '$pwd'";
+		$sql = "SELECT ID FROM Account WHERE Name = '$user' AND Password = '$pwd'";
 		
 		$result = $this->myDb->query($sql);
 		$line = $this->myDb->fetchArray($result);
-		return $line['username'];
+		return $line[0];
 		
 		}
 }

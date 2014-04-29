@@ -1,5 +1,5 @@
 <?php
-
+header("Access-Control-Allow-Origin: *");
 define("HOST","localhost",true);
 define("USERNAME","valanmax_be",true);
 define("PASSWORD","Azerty123",true);

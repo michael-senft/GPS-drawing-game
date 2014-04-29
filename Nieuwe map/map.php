@@ -9,7 +9,7 @@
 <script type="text/javascript" src="jquery-1.4.4.min.js"></script>  
 <script src="http://maps.googleapis.com/maps/api/js?sensor=false" type="text/javascript"></script>
 <script type="text/javascript" src="gmap3.js"></script>
-<script type="text/javascript" charset="utf-8" src="phonegap-1.2.0.js"></script>
+<script type="text/javascript" charset="utf-8" src="cordova-2.0.0.js"></script>
 
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
@@ -50,12 +50,28 @@
             	<a href="#myPanel" data-role="button" data-display="overlay" data-dismissible="true">Menu</a>
 				   <div id="map_canvas">
                    
-                   <script type="text/javascript">
+                   <script type="text/javascript" charset="utf-8">
 
-				var hoogte = $(document).height();
+    // Wait for Cordova to load
+    //
+    document.addEventListener("deviceready", onDeviceReady, false);
+
+    // Cordova is ready
+    //
+    function onDeviceReady() {
+		var options = { timeout: 10000 };
+        watchID = navigator.geolocation.watchPosition(onSuccess, onError, options);
+    }
+
+    // onSuccess Geolocation
+    //
+					function onSuccess(position) {
+        			var lat = position.coords.latitude;
+          			var lng = position.coords.longitude;
+					var hoogte = $(document).height();
 					var breedte = $(document).width();
 					setTimeout(function(){
-					var latlng = new google.maps.LatLng(51.225067, 4.408544);
+					var latlng = new google.maps.LatLng(lat, lng);
 					$("#map_canvas").width("350px").height("600px").gmap3({
     				map:{
       						options:{
@@ -80,22 +96,24 @@
 												[51.253326, 4.278819]
       											]
     										}
-						}
+						},
+						marker:{
+    		  					latLng:[lat, lng]
+    					}
   					});
-  					$('#map_canvas')
-    				.width(hoogte)
-    				.height(breedte) 
-    				.gmap3({trigger:"resize"});
-					autofit:{};	
-					}, 2000);
-				
-					  
-					  
-				   
-		
-				   
-					
-                   </script>
+  					  
+          			
+    }
+       
+
+    // onError Callback receives a PositionError object
+    //
+    function onError(error) {
+        alert('code: '    + error.code    + '\n' +
+                'message: ' + error.message + '\n');
+    }
+
+    </script>
 					</div>				
 			</div>
             </div>

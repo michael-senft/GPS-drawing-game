@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Device Properties Example</title>
+
+    <script type="text/javascript" charset="utf-8" src="cordova-2.0.0.js"></script>
+    <script type="text/javascript" src="jquery-1.4.4.min.js"></script>  
+	<script src="http://maps.googleapis.com/maps/api/js?sensor=false" type="text/javascript"></script>
+	<script type="text/javascript" src="gmap3.js"></script>
+    <script type="text/javascript" charset="utf-8">
+
+    // Wait for Cordova to load
+    //
+    document.addEventListener("deviceready", onDeviceReady, false);
+
+    // Cordova is ready
+    //
+    function onDeviceReady() {
+		var options = { timeout: 10000 };
+        watchID = navigator.geolocation.watchPosition(onSuccess, onError, options);
+    }
+
+    // onSuccess Geolocation
+    //
+					function onSuccess(position) {
+        			var lat = position.coords.latitude;
+          			var lng = position.coords.longitude;
+					var hoogte = $(document).height();
+					var breedte = $(document).width();
+					setTimeout(function(){
+					var latlng = new google.maps.LatLng(lat, lng);
+					$("#geolocation").width("350px").height("600px").gmap3({
+    				map:{
+      						options:{
+       						zoom:12,
+							center:latlng,
+        					navigationControl: true,
+        					scrollwheel: true,
+        					streetViewControl: true
+      						}
+    					},
+						polyline:{
+    								options:{
+      											strokeColor: "#FF0000",
+      											strokeOpacity: 1.0,
+      											strokeWeight: 2,
+     											path:[
+        										[51.253326, 4.278819],
+												[51.185159, 4.254443],
+												[51.183868, 4.322078],
+												[51.235273, 4.372203],
+												[51.252897, 4.336154],
+												[51.253326, 4.278819]
+      											]
+    										}
+						},
+						marker:{
+    		  					latLng:[lat, lng]
+    					}
+  					});
+  					$('#map_canvas')
+    				.width(hoogte)
+    				.height(breedte) 
+    				.gmap3({trigger:"resize"});
+					autofit:{};	
+					}, 2000);  
+          			
+    }
+       
+
+    // onError Callback receives a PositionError object
+    //
+    function onError(error) {
+        alert('code: '    + error.code    + '\n' +
+                'message: ' + error.message + '\n');
+    }
+
+    </script>
+  </head>
+  <body>
+    <p id="geolocation">Finding geolocation...</p>
+  </body>
+</html>
