@@ -12,8 +12,9 @@ if(isset( $_POST["usrname"] ) )
 	{
 		//$_SESSION['LOGIN_STATUS']=true;
 		$_SESSION['user']=$username;
-		$naam = $u->getUser($username,$password); 
-		$data = array('success'=> true,'message'=>'Success message: hooray!','naam'=>$naam);
+		$naam = $u->getUser($username,$password);
+		$ID = $u->getUserID($username,$password); 
+		$data = array('success'=> true,'Naam'=>$naam,'Id'=>$ID);
 		echo json_encode($data);
 		//header("Location:modeSelect.php");
 		exit();
