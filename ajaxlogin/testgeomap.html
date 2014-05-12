@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Device Properties Example</title>
+
+    <script type="text/javascript" charset="utf-8" src="cordova-2.0.0.js"></script>
+    <script type="text/javascript" src="jquery-1.4.4.min.js"></script>  
+	<script src="http://maps.googleapis.com/maps/api/js?sensor=false" type="text/javascript"></script>
+	<script type="text/javascript" src="gmap3.js"></script>
+    <script type="text/javascript" charset="utf-8">
+	var path = [];
+	var array = [];
+	var myBoolean = new Boolean();
+	var ID = sessionStorage.getItem('ID');
+	var naam = sessionStorage.getItem('naam');
+	alert(ID + naam);
+    $(function() {
+		$("#upload").click(function() {
+			for (var i=0;i<array.length;i++)
+			{
+				var loc = array[i].split(",");
+            	var lt = parseFloat(loc[0]);
+            	var lg = parseFloat(loc[1]);
+				$.ajax({		
+				  type: "POST",
+				  url: "http://valanmax.be/DrawingGame/pushcoord.php",
+				  dataType: "json",
+				  data: "lat="+ lt + "&lng="+ lg + "&id="+ ID + "&naam=" + naam,
+				  cache: true,
+				  success: function(data){
+						   $("#flash").hide();
+						   if (data.success == true){
+			
+						   }
+						   else{
+								 $("#errorMessage").html(result);
+						   }
+				  }
+				  });
+			
+			}
+		});
+		
+		$("#start").click(function() {
+		
+			document.addEventListener("deviceready", onDeviceReady, false);
+			function onDeviceReady() {
+				var options = { timeout: 10000 };
+				watchID = navigator.geolocation.watchPosition(onSuccess, onError, options);
+			}
+		
+			// onSuccess Geolocation
+			//
+							function onSuccess(position) {
+							var lat = position.coords.latitude;
+							var lng = position.coords.longitude;
+							var hoogte = $(document).height();
+							var breedte = $(document).width();
+							var latlng = new google.maps.LatLng(lat, lng);
+							path.push(latlng);
+							array.push(lat+","+lng);
+							setTimeout(function(){
+							$("#geolocation").width("350px").height("600px").gmap3({
+							map:{
+									options:{
+									center:latlng,
+									navigationControl: true,
+									scrollwheel: true,
+									streetViewControl: true
+									}
+								},
+								polyline:{
+											options:{
+														strokeColor: "#FF0000",
+														strokeOpacity: 1.0,
+														strokeWeight: 2,
+														path: path
+													}
+								},
+								marker:{
+										latLng:[lat, lng]
+								}
+							});
+							$('#map_canvas')
+							.width(hoogte)
+							.height(breedte) 
+							.gmap3({trigger:"resize"});
+							autofit:{};	
+							}, 2000);  
+							
+			}
+			   
+		
+			// onError Callback receives a PositionError object
+			//
+			function onError(error) {
+				
+				if(error.code == 3)
+				{
+					alert('U staat stil tracking stopt');
+				}
+				else
+				{
+					alert('code: '    + error.code    + '\n' +
+						'message: ' + error.message + '\n')
+				}
+			}
+		});
+		
+	});
+	
+
+    </script>
+  </head>
+  <body>
+  	<div id="session"></div>
+  	<div id="buttons"><input type="button" id="start" value="Start" data-role="button"> <input type="button" id="stop" value="Stop" data-role="button"> <input type="button" id="upload" value="Upload" data-role="button">  </div>
+    <div id="geolocation">Finding geolocation...</div>
+  </body>
+</html>

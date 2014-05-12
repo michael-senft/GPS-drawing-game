@@ -10,31 +10,20 @@ if(isset( $_POST["usrname"] ) )
 	$u = new Users();
 	if( $u->Authorize($username,$password) == 1)
 	{
-		//$_SESSION['LOGIN_STATUS']=true;
 		$_SESSION['user']=$username;
 		$naam = $u->getUser($username,$password);
 		$ID = $u->getUserID($username,$password); 
 		$data = array('success'=> true,'Naam'=>$naam,'Id'=>$ID);
 		echo json_encode($data);
-		//header("Location:modeSelect.php");
 		exit();
 	}
 	else
 	{
-		header("login.php");
+		$data = array('error'=> true,'Tekst'=>"User name or password wrong");
+		echo json_encode($data);
 		exit();
 	}
 
-}
-if(isset($_POST["kid"]))
-{
-	header("Location:map.php");
-	exit();
-}
-else
-{
-	header("Location:modeSelect.php");
-	exit();
 }
 ?>
 

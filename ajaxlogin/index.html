@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Untitled Document</title>
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.1/jquery.mobile-1.4.1.min.css" />
+	<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+	<script src="http://code.jquery.com/mobile/1.4.1/jquery.mobile-1.4.1.min.js"></script>
+    <script type="text/javascript" src="jquery-1.4.4.min.js"></script>
+    <script type="text/javascript">
+function validLogin(){
+      var uname=$('#username').val();
+      var password=$('#password').val();
+
+      var dataString = 'usrname='+ uname + '&pwd='+ password;
+      $("#flash").show();
+      $("#flash").fadeIn(400).html('<img src="image/loading.gif" />');
+      $.ajax({		
+      type: "POST",
+      url: "http://valanmax.be/DrawingGame/log.php",
+	  dataType: "json",
+      data: "usrname="+ uname + "&pwd="+ password,
+      cache: false,
+      success: function(data){
+               if (data.success == true){
+					sessionStorage.setItem("ID", data.Id);
+					sessionStorage.setItem("naam", data.Naam);
+					window.location = "map.html"
+
+               }
+			   else{
+                     $("#errorMessage").html(result);
+               }
+      }
+      });
+}
+
+
+</script>
+</head>
+
+<body>
+
+<!-- Start of first page I -->
+		<div data-role="page" id="page1">
+			<!-- Header -->
+			<div data-role="header" data-position="fixed">
+				<h1>Login</h1>
+
+			</div>
+			<!-- /header -->
+			<!-- Content    -->
+			<div data-role="content" id="logincontent">
+            
+				<div id="logindiv" style="height:100%">
+                <label for="basic">Username:</label>
+				<input type="text" name="username" id="username" data-mini="true" />
+                <label for="basic">Password:</label>
+				<input type="password" name="password" id="password" data-mini="true" />
+                <input type="button" name="submit" value="Submit" class="button" onclick="validLogin()"/>
+                </div>
+				
+			</div>
+			<!-- /content -->
+			
+			<!-- footer -->
+			<!--div data-role="footer">
+			</div-->
+			<!-- /footer -->
+		</div>
+
+</body>
+</html>
