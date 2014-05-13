@@ -1,31 +1,37 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Untitled Document</title>
-<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.1/jquery.mobile-1.4.1.min.css" />
-	<script type="text/javascript" charset="utf-8" src="cordova-2.0.0.js"></script>
-    <!--<script type="text/javascript" charset="utf-8" src="cordova.js"></script>-->
-	<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
-	<script src="http://code.jquery.com/mobile/1.4.1/jquery.mobile-1.4.1.min.js"></script>
-    <script type="text/javascript" src="jquery-1.4.4.min.js"></script>
-    <script src="http://maps.googleapis.com/maps/api/js?sensor=false" type="text/javascript"></script>
-    <script type="text/javascript" src="gmap3.js"></script>
-    <style>
-	</style>
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Device Properties Example</title>
+
+    <script type="text/javascript" charset="utf-8" src="cordova-2.0.0.js"></script>
+    <script type="text/javascript" src="jquery-1.4.4.min.js"></script>  
+	<script src="http://maps.googleapis.com/maps/api/js?sensor=false" type="text/javascript"></script>
+	<script type="text/javascript" src="gmap3.js"></script>
     <script type="text/javascript" charset="utf-8">
 	var path = [];
 	var array = [];
 	var myBoolean = new Boolean();
 	var ID = sessionStorage.getItem('ID');
 	var naam = sessionStorage.getItem('naam');
-	
-	if(ID ==0 || ID == null)
-	{
-		window.location = "index.html"
-	}
+	var ltlng = new google.maps.LatLng(51.216322, 4.416679);
     $(function() {
-		$('#header').text('Lets play! '+ naam);
+		setTimeout(function(){
+					$("#geolocation").width("350px").height("600px").gmap3({
+					map:{
+							options:{
+							center:ltlng,
+							navigationControl: false,
+							scrollwheel: false,
+							streetViewControl: false,
+							draggable: false,
+							mapTypeControl:false
+							}
+						}
+					});
+					$('#geolocation').gmap3({trigger:"resize"});
+					autofit:{};	
+					}, 2000);
+							
 		$("#upload").click(function() {
 			for (var i=0;i<array.length;i++)
 			{
@@ -39,6 +45,7 @@
 				  data: "lat="+ lt + "&lng="+ lg + "&id="+ ID + "&naam=" + naam,
 				  cache: true,
 				  success: function(data){
+						   $("#flash").hide();
 						   if (data.success == true){
 			
 						   }
@@ -47,54 +54,18 @@
 						   }
 				  }
 				  });
-				  alert("uploading done!");
 			
 			}
 		});
-		$("#reset").click(function() {
-			 path = [];
-			 array = [];
-  			$('#content').gmap3({
-    				clear: {
-      				id:"poly"
-    				},
-					zoom: 15
-  			});
-
-		});
-		
-		$("#start").click(function() {
-			$("#content").width("350px").height("600px").gmap3({
-							map:{
-									options:{
-									center: new google.maps.LatLng(-34.397, 150.644),
-									navigationControl: false,
-									scrollwheel: true,
-									streetViewControl: false
-									}
-								},
-								polyline:{
-											options:{
-														strokeColor: "#FF0000",
-														strokeOpacity: 1.0,
-														strokeWeight: 2,
-														path: path,
-														id:"poly"
-													}
-								},
-								marker:{
-										latLng:[lat, lng],
-										id:"marker"
+		$("#Remove").click(function() {
+			$('#geolocation').gmap3({
+								clear: {
+								  id: "poly"
 								}
-							});
-							$('#content')
-							.width(breedte)
-							.height(hoogte+500) 
-							.gmap3({
-								zoom: 15,
-								trigger:"resize"});
-							autofit:{};	
-							}, 2000); 
+						});
+			
+		});
+		$("#start").click(function() {
 		
 			document.addEventListener("deviceready", onDeviceReady, false);
 			function onDeviceReady() {
@@ -107,12 +78,34 @@
 							function onSuccess(position) {
 							var lat = position.coords.latitude;
 							var lng = position.coords.longitude;
-							var hoogte = $('#map-canvas').height();
-							var breedte = $('#map-canvas').width();
+							var hoogte = $(document).height();
+							var breedte = $(document).width();
 							var latlng = new google.maps.LatLng(lat, lng);
 							path.push(latlng);
 							array.push(lat+","+lng);
+							$('#geolocation').gmap3({
+								map:{
+									options:{
+									center:latlng,
+									zoom: 15								
+									}
+								},
+								polyline:{
+											options:{
+														strokeColor: "#0000FF",
+														strokeOpacity: 1.0,
+														strokeWeight: 2,
+														path: path,
+														id:"poly"
+													}
+								},
+								marker:{
+										latLng:[lat, lng],
+										id:"marker"
+								}
+							});
 							
+							  
 							
 			}
 			   
@@ -133,39 +126,16 @@
 			}
 		});
 		
-	
+		
+	});
 	
 
     </script>
-    <script>
-	$(document).on("swiperight", function(events, ui) {
-		$("#myPanel").panel("open", {display: 'overlay', position: 'left'} );
-	});
-	</script>
-</head>
-
-<body>
-		<div data-role="page" id="map">        
-        
-        	<div data-role="panel" id="myPanel" class="ui-response" data-content-theme="b">
-            <a href="#">Log uit</a> 
-            </div>
-			<!-- Header -->
-			<div data-role="header" data-position="fixed" >
-            	<!--<a href="#" data-role="button" data-transition="pop">Back</a> -->
-                <input type="button" id="start" value="start" />
-                <input type="button" id="upload" value="upload" />
-                <input type="button" id="reset" value="reset" />
-                <div id="header" style="text-align: center;">
-                </div>
-			</div>
-			<!-- /header -->
-			<!-- Content    -->
-			<div data-role="content" id="content">
-			</div>
-            <div id="map-canvas"></div>
-
-		</div>
-
-</body>
+  </head>
+  <body>
+  
+  	<div id="session"></div>
+  	<div id="buttons" data-role="header"><input type="button" id="start" value="Start" data-role="button"> <input type="button" id="stop" value="Stop" data-role="button"> <input type="button" id="upload" value="Upload" data-role="button"> <input type="button" id="Remove" value="Remove" data-role="button">  </div>
+    <div id="geolocation">Loading map...</div>
+  </body>
 </html>
