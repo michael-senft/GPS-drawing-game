@@ -1,0 +1,301 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Kids Mode</title>
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.1/jquery.mobile-1.4.1.min.css" />
+	<script type="text/javascript" charset="utf-8" src="cordova-2.0.0.js"></script>
+    <!--<script type="text/javascript" charset="utf-8" src="cordova.js"></script>-->
+	<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+	<script src="http://code.jquery.com/mobile/1.4.1/jquery.mobile-1.4.1.min.js"></script>
+    <script type="text/javascript" src="jquery-1.4.4.min.js"></script>
+    <script src="http://maps.googleapis.com/maps/api/js?sensor=false" type="text/javascript"></script>
+    <script type="text/javascript" src="gmap3.js"></script>
+    <script type="text/javascript">
+	
+	  var path = [];
+	  var newPath =[];
+	  var x;
+	  var y;
+	  var lat=[];
+	  var stringlng=[];
+	  var lng =[];
+	  var latlng;
+	  var latt;
+	  var lngt;
+	  var nearestpoint = new Array();
+	  var Start = false;
+	  var Draw = false;
+	  var distance;
+	  var Currentlatlng;
+	  var latlng2;
+	  var ID = sessionStorage.getItem('ID');
+	  var naam = sessionStorage.getItem('naam');
+	  var ltlng = new google.maps.LatLng(51.216322, 4.416679);
+	  var pointSelect;
+	  var currentdate = new Date(); 
+	  var startTime;
+	  var endTime;
+	  if(ID ==0 || ID == null)
+	{
+		window.location = "index.html"
+	}
+	  $(function() {
+		 var hoogte = $('body').height() - $('#header').height() - $('#footer').height();
+	    var breedte = $('body').width();
+		setTimeout(function(){
+					$("#content").width("350px").height("600px").gmap3({
+					map:{
+							options:{
+							center:ltlng,
+							navigationControl: false,
+							scrollwheel: false,
+							streetViewControl: false,
+							draggable: false,
+							mapTypeControl:false
+							}
+						}
+					});
+					$('#content')
+					.width(breedte)
+					.height(hoogte)
+					.gmap3({trigger:"resize"});
+					autofit:{};	
+					}, 2000);
+					 var shape =prompt("Enter Name for shape");
+							 $.ajax({		
+							  type: "POST",
+							  url: "http://valanmax.be/DrawingGame/getCoord.php",
+							  dataType: "json",
+							  data: "Path="+ shape ,
+							  cache: true,
+							  success: function(data){
+								  if (data.success == true){
+									  alert("downloading done!");
+									  x = data.lat;
+									  y = data.lng;
+									  lat= x.toString().split(",");
+									  lng = y.toString().split(",");										 
+								  	}
+								}
+							});
+					$("#Stop").click(function() {
+					});
+					$("#Back").click(function() {
+						if (confirm('Are you sure you want to go back progress will be lossed')) {
+							window.location = "Modeselection.html";
+						} 
+						else {
+						}
+						
+					});
+					
+					$("#start").click(function() {
+					for (var i = 0; i < lat.length; i++) { 
+			  		var latlng = new google.maps.LatLng(lat[i],lng[i],true);
+					path.push(latlng);
+						
+					}
+					var pointSelect =0;	  
+					document.addEventListener("deviceready", onDeviceReady, false);
+					function onDeviceReady() {
+						var options = { timeout: 10000 };
+						watchID = navigator.geolocation.watchPosition(onSuccess, onError, options);
+					}
+				
+					// onSuccess Geolocation
+					//
+									function onSuccess(position) {
+											distance = 0;
+											checkDistance();
+											latt = position.coords.latitude;
+											lngt = position.coords.longitude;
+											Currentlatlng = new google.maps.LatLng(latt, lngt);
+											checkDistance();
+											//path.push(latlng);	
+											$('#content').gmap3({
+												map:{
+													options:{
+													center:Currentlatlng,
+													zoom: 15								
+													}
+												},
+												polyline:{
+													options:{
+																strokeColor: "#0000FF",
+																strokeOpacity: 1.0,
+																strokeWeight: 1,
+																path: path,
+																id:"poly"
+															}
+												},
+												marker:{
+													
+														latLng:[latt, lngt],
+														id:"marker",
+												},
+												marker:{
+													values:[{
+														latLng:[lat[pointSelect], lng[pointSelect]],
+														id:"start"+pointSelect,
+														options:{
+															icon:'http://maps.google.com/mapfiles/ms/icons/green-dot.png'
+														}},{
+													
+														latLng:[latt, lngt],
+														id:"marker",
+												}]
+												}	
+											});
+											if(start==true)
+											{
+												
+												$('#content').gmap3({
+													clear: {
+													  id: "start"+pointSelect
+													}
+												  });
+												  pointSelect = pointSelect+1;
+												$('#content').gmap3({
+													marker:{
+													values:[{
+														latLng:[lat[pointSelect], lng[pointSelect]],
+														id:"start"+pointSelect,
+														options:{
+															icon:'http://maps.google.com/mapfiles/ms/icons/green-dot.png'
+														}}]
+												}
+													});
+												
+												start = false;
+												
+												
+											}
+											if(Draw == true)
+												{
+													var starttime =   
+														currentdate.getHours() + ":"  
+														+ currentdate.getMinutes() + ":" 
+														+ currentdate.getSeconds();
+														startTime = parseFloat(starttime);
+													var latlng = new google.maps.LatLng(latt, lngt);
+													newPath.push(latlng);
+													$('#content').gmap3({
+														polyline:{
+														options:{
+																	strokeColor: "#FF0000",
+																	strokeOpacity: 1.0,
+																	strokeWeight: 3,
+																	path: newPath,
+																	id:"polywalk"
+																}
+														}
+													
+													});
+												}
+												if(pointSelect > path.length)
+												{
+													 var cdate = new Date();
+													var endtime =   
+														cdate.getHours() + ":"  
+														+ cdate.getMinutes() + ":" 
+														+ cdate.getSeconds();
+														endTime = parseFloat(endtime);
+														var verschil = endTime - startTime;
+														$('#timerdiv').text("time: "+verschil);
+												}
+											
+											
+											
+											
+				
+					}
+					   
+				
+					// onError Callback receives a PositionError object
+					//
+					function onError(error) {
+						
+						if(error.code == 3)
+						{
+							alert('U staat stil tracking stopt');
+						}
+						else
+						{
+							alert('code: '    + error.code    + '\n' +
+								'message: ' + error.message + '\n')
+						}
+					}
+					function checkDistance()
+					{
+						$("#content").gmap3({
+								  getdistance:{
+									options:{ 
+									  origins:[Currentlatlng], 
+      								  destinations:[path[pointSelect]],
+									  travelMode: google.maps.TravelMode.DRIVING
+									},
+									callback: function(results, status){
+									  if (results){
+										for (var i = 0; i < results.rows.length; i++){
+										  var elements = results.rows[i].elements;
+										  for(var j=0; j<elements.length; j++){
+											switch(elements[j].status){
+											  case "OK":
+											  distance = parseFloat(elements[j].distance.text);
+											  if(distance <= 20 && distance !=0)
+												{
+													start = true;
+													Draw = true;
+												}
+												break;
+											}
+										  }
+										} 
+									  } 
+									  
+									}
+								  }
+								});
+					}
+				});
+				
+	  });
+
+	  </script>
+      
+      
+</head>
+
+<body>
+<body>
+		<div data-role="page" id="map">        
+        
+        	<div data-role="panel" id="myPanel" class="ui-response" data-content-theme="b">
+            <a href="#">Log uit</a> 
+            </div>
+			<!-- Header -->
+			<div data-role="header" data-position="fixed" id="header">
+            	<!--<a href="#" data-role="button" data-transition="pop">Back</a> -->
+                <div data-role="navbar">
+                <ul>
+                	<li><input type="button" id="Back" value="Back" /></li>
+                	<li><input type="button" id="start" value="start" /></li>
+                	<li><input type="button" id="Stop" value="Stop" /></li>
+                	
+                </ul>
+                </div>
+                <div id="header2" style="text-align: center;">
+                </div>
+                <div id="timerdiv"></div>
+			</div>
+			<!-- /header -->
+			<!-- Content    -->
+			<div  id="content">
+			</div>
+
+		</div>
+
+</body>
+</body>
+</html>

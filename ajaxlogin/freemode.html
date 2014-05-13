@@ -1,0 +1,220 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Free Mode</title>
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.1/jquery.mobile-1.4.1.min.css" />
+	<script type="text/javascript" charset="utf-8" src="cordova-2.0.0.js"></script>
+    <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+	<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+	<script src="http://code.jquery.com/mobile/1.4.1/jquery.mobile-1.4.1.min.js"></script>
+    <script type="text/javascript" src="jquery-1.4.4.min.js"></script>
+    <script src="http://maps.googleapis.com/maps/api/js?sensor=false" type="text/javascript"></script>
+    <script type="text/javascript" src="gmap3.js"></script>
+    <style>
+	</style>
+    <script type="text/javascript" charset="utf-8">
+	var path = [];
+	var array = [];
+	var shape;
+	var v;
+	var myBoolean = true;
+	var ID = sessionStorage.getItem('ID');
+	var naam = sessionStorage.getItem('naam');
+	var ltlng = new google.maps.LatLng(51.216322, 4.416679);
+	if(ID ==0 || ID == null)
+	{
+		window.location = "index.html"
+	}
+    $(function() {
+		//
+		var hoogte = $('body').height() - $('#header').height() - $('#footer').height();
+	    var breedte = $('body').width();
+		setTimeout(function(){
+					$("#content").width("350px").height("600px").gmap3({
+					map:{
+							options:{
+							center:ltlng,
+							navigationControl: false,
+							scrollwheel: false,
+							streetViewControl: false,
+							draggable: false,
+							mapTypeControl:false
+							}
+						}
+					});
+					$('#content')
+					.width(breedte)
+					.height(hoogte)
+					.gmap3({trigger:"resize"});
+					autofit:{};	
+					}, 2000);
+					
+		$('#header2').text('Lets play! '+ naam);
+		$("#upload").click(function() {
+			shape = prompt("Enter Name for shape");
+			if(shape !=""|| shape !=null)
+			{
+				for (var i=0;i<array.length;i++)
+				{		
+					var loc = array[i].split(",");
+					var lt = parseFloat(loc[0]);
+					var lg = parseFloat(loc[1]);
+					$.ajax({		
+					  type: "POST",
+					  url: "http://valanmax.be/DrawingGame/pushcoord.php",
+					  dataType: "json",
+					  data: "lat="+ lt + "&lng="+ lg + "&user="+ naam + "&naam=" + shape+ "&latlng=" + array[i] + "&volg=" + i,
+					  cache: true,
+					  success: function(data){
+							   if (data.success == true){
+				
+							   }
+							   else{
+									 $("#errorMessage").html(result);
+							   }
+					  }
+					  });	
+					  
+				}
+				array = [];
+				alert("uploading done");
+			}
+		});
+		$("#Back").click(function() {
+			alert();
+			window.location = "Modeselection.html";
+		});
+		$("#reset").click(function() {
+			 path = [];
+			 array = [];
+  			$('#content').gmap3({
+    				clear: {
+      				id:"poly"
+    				},
+					zoom: 15
+  			});
+
+		});
+		$("#Stop").click(function() {
+			myBoolean = false;
+		});
+		
+		$("#start").click(function() {
+			myBoolean = true;
+			document.addEventListener("deviceready", onDeviceReady, false);
+			function onDeviceReady() {
+				shape = prompt("Enter Name for shape");
+				var options = { timeout: 10000 };
+				watchID = navigator.geolocation.watchPosition(onSuccess, onError, options);
+			}
+		
+			// onSuccess Geolocation
+			//
+							function onSuccess(position) {
+								if(myBoolean == true){
+									var lat = position.coords.latitude;
+									var lng = position.coords.longitude;
+									var latlng = new google.maps.LatLng(lat, lng);
+									path.push(latlng);
+									array.push(lat+","+lng);
+									$.ajax({		
+										  type: "POST",
+										  url: "http://valanmax.be/DrawingGame/pushcoord.php",
+										  dataType: "json",
+										  data: "lat="+ lat + "&lng="+ lng + "&user="+ naam + "&naam=" + shape+ "&latlng=" + "" + "&volg=" + "",
+										  cache: true,
+										  success: function(data){
+												   if (data.success == true){
+									
+												   }
+												   else{
+														 $("#errorMessage").html(result);
+												   }
+										  }
+										  });
+									
+									$('#content').gmap3({
+										map:{
+											options:{
+											center:latlng,
+											zoom: 15								
+											}
+										},
+										polyline:{
+													options:{
+																strokeColor: "#0000FF",
+																strokeOpacity: 1.0,
+																strokeWeight: 2,
+																path: path,
+																id:"poly"
+															}
+										},
+										marker:{
+												latLng:[lat, lng],
+												id:"marker"
+										}
+									});
+										}
+							
+							  
+							
+			}
+			   
+		
+			// onError Callback receives a PositionError object
+			//
+			function onError(error) {
+				
+				if(error.code == 3)
+				{
+					alert('U staat stil tracking stopt');
+				}
+				else
+				{
+					alert('code: '    + error.code    + '\n' +
+						'message: ' + error.message + '\n')
+				}
+			}
+		});
+		
+	});
+	
+
+    </script>
+    <script>
+	$(document).on("swiperight", function(events, ui) {
+		$("#myPanel").panel("open", {display: 'overlay', position: 'left'} );
+	});
+	</script>
+</head>
+
+<body>
+		<div data-role="page" id="map">        
+        
+        	<div data-role="panel" id="myPanel" class="ui-response" data-content-theme="b">
+            <a href="#">Log uit</a> 
+            </div>
+			<!-- Header -->
+			<div data-role="header" data-position="fixed" id="header">
+            	<!--<a href="#" data-role="button" data-transition="pop">Back</a> -->
+                <div data-role="navbar">
+                <ul>
+                	<li><input type="button" id="Back" value="Back" /></li>
+                	<li><input type="button" id="start" value="start" /></li>
+                	<li><input type="button" id="Stop" value="Stop" /></li>
+                	
+                </ul>
+                </div>
+                <div id="header2" style="text-align: center;">
+                </div>
+			</div>
+			<!-- /header -->
+			<!-- Content    -->
+			<div  id="content">
+			</div>
+
+		</div>
+
+</body>
+</html>

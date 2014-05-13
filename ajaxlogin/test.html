@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Untitled Document</title>
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.1/jquery.mobile-1.4.1.min.css" />
+<script type="text/javascript" charset="utf-8" src="cordova-2.0.0.js"></script>
+    <!--<script type="text/javascript" charset="utf-8" src="cordova.js"></script>-->
+	<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+	<script src="http://code.jquery.com/mobile/1.4.1/jquery.mobile-1.4.1.min.js"></script>
+    <script type="text/javascript" src="jquery-1.4.4.min.js"></script>
+    <script src="http://maps.googleapis.com/maps/api/js?sensor=false" type="text/javascript"></script>
+    <script type="text/javascript" src="gmap3.js"></script>
+    <script type="text/javascript">
+	
+	  var path = [];
+	  var uniquePath = [];
+	  var x;
+	  var y;
+	  var lat=[];
+	  var stringlng=[];
+	  var lng =[];
+	  var latlng;
+	  
+	  var ltlng = new google.maps.LatLng(51.216322, 4.416679);
+	  $(function() {
+		  $("#get").click(function() {
+			   var shape =prompt("Enter Name for shape");
+			 $.ajax({		
+			  type: "POST",
+			  url: "http://valanmax.be/DrawingGame/getCoord.php",
+			  dataType: "json",
+			  data: "Path="+ shape ,
+			  cache: true,
+			  success: function(data){
+				  if (data.success == true){
+					  alert("downloading done!");
+					  x = data.lat;
+					  y = data.lng;
+					  lat= x.toString().split(",");
+					  lng = y.toString().split(",");
+					  
+						
+						 
+				  }
+	
+		  	}
+		  	});
+		  });
+		  
+		  $("#start").click(function() {
+			  
+			  for (var i = 0; i < lat.length; i++) { 
+			  		var latlng = new google.maps.LatLng(lat[i],lng[i],true);
+					path.push(latlng);
+						
+				}
+				
+				$.each(path, function(i, el){
+					if($.inArray(el, uniquePath) === -1) uniquePath.push(el);
+				});
+				alert(path[0]);
+				 var full_list = ""
+				  for(var i=0; i<path.length; ++i){
+					  full_list = full_list + path[i] + '<br />';
+				  }
+				  $("#content").text(full_list);
+				
+					$("#map").width("800px").height("600px").gmap3({
+					map:{
+							options:{
+							center:ltlng,
+							navigationControl: true,
+							scrollwheel: true,
+							streetViewControl: true,
+							draggable: true,
+							mapTypeControl:true
+							}
+							
+						},
+						
+					});
+					
+		  });
+		  $("#draw").click(function() {
+			  $('#map').gmap3({
+								map:{
+									options:{
+									center:path[0],
+									zoom: 15								
+									}
+								},
+								polyline:{
+											options:{
+														strokeColor: "#0000FF",
+														strokeOpacity: 1.0,
+														strokeWeight: 2,
+														path: uniquePath,
+														id:"poly"
+													}
+								}
+								});
+		  });
+		  
+	  });
+
+	  
+	</script>
+</head>
+
+<body>
+<div id="text">
+<input type="button" id="start" value="start" />
+<input type="button" id="get" value="get" />
+<input type="button" id="draw" value="draw" />
+</div>
+<div id="content"> </div>
+<div id="map"></div>
+</body>
+</html>

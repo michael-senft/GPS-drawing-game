@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Mode Selection</title>
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.1/jquery.mobile-1.4.1.min.css" />
+	<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+	<script src="http://code.jquery.com/mobile/1.4.1/jquery.mobile-1.4.1.min.js"></script>
+    <script type="text/javascript" src="jquery-1.4.4.min.js"></script>
+
+    <script type="text/javascript">
+	var ID = sessionStorage.getItem('ID');
+	var naam = sessionStorage.getItem('naam');
+	if(ID ==0 || ID == null)
+	{
+		window.location = "index.html"
+	}
+	$(function() {
+		$('#header').text('Choose Mode! '+ naam);
+		$("#KidsButton").click(function() {
+			window.location = "KidsMode.html"
+		});
+		$("#ChalButton").click(function() {
+			alert("under construction");
+		});
+		$("#FreeButton").click(function() {
+			window.location = "freemode.html"
+		});
+	});
+	</script>
+</head>
+
+<body>
+
+		<div data-role="content" id="ModeSelection">
+            <div data-role="header" data-position="fixed" >           
+			</div>
+            <div id="header" style="text-align:center; font-size:medium; font-weight:bold"></div>
+            <div id="Modediv" style="height:100%">
+            	<input type="button" id="KidsButton" value="Kids Mode" />
+                <input type="button" id="ChalButton" value="Challenger Mode" />
+                <input type="button" id="FreeButton" value="Free Mode" />
+            </div>
+             
+            
+         </div>
+			
+		
+
+</body>
+</html>
